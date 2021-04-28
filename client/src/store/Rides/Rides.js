@@ -1,12 +1,17 @@
 import { makeAutoObservable } from "mobx";
 
 class Rides {
-  list = [
-    { id: 1, name: "moskvich", mileage: 21219, consumption: 10, photo: "" },
-    { id: 2, name: "Drag Star", mileage: 27592, consumption: 5, photo: "" },
-  ];
   constructor() {
+    this._list = [];
     makeAutoObservable(this);
+  }
+
+  setList(value) {
+    this._list = value;
+  }
+
+  get list() {
+    return this._list;
   }
 }
 

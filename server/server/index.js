@@ -18,53 +18,53 @@ app.use("/api", router);
 let httpServer;
 
 function initialize() {
-    return new Promise((resolve, reject) => {
-        function listen() {
-            mongoose.set("useFindAndModify", false);
-            return () => {
-                httpServer
-                    .listen(webServerConfig.port)
-                    .on("listening", () => {
-                        console.log(`Web server listening on localhost:${webServerConfig.port}`);
+  return new Promise((resolve, reject) => {
+    function listen() {
+      mongoose.set("useFindAndModify", false);
+      return () => {
+        httpServer
+          .listen(webServerConfig.port)
+          .on("listening", () => {
+            console.log(`Web server listening on localhost:${webServerConfig.port}`);
 
-                        resolve();
-                    })
-                    .on("error", (err) => {
-                        reject(err);
-                    });
-            };
-        }
-        const app = express();
-        httpServer = http.createServer(app);
-        app.use(cors());
-        app.use(express.urlencoded({ extended: true }));
-        app.use(express.json());
+            resolve();
+          })
+          .on("error", (err) => {
+            reject(err);
+          });
+      };
+    }
+    const app = express();
+    httpServer = http.createServer(app);
+    app.use(cors());
+    app.use(express.urlencoded({ extended: true }));
+    app.use(express.json());
 
-        app.use("/api", router);
+    app.use("/api", router);
 
-        app.get("/", async (req, res) => {
-            res.end("HELLO WORLD");
-        });
-
-        mongoose
-            // eslint-disable-next-line no-undef
-            .connect(process.env.CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
-            .then(listen())
-            .catch((error) => console.log(error.messaGE));
+    app.get("/", async (req, res) => {
+      res.end("HELLO WORLD");
     });
+
+    mongoose
+      // eslint-disable-next-line no-undef
+      .connect(process.env.CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+      .then(listen())
+      .catch((error) => console.log(error.messaGE));
+  });
 }
 
 function close() {
-    return new Promise((resolve, reject) => {
-        httpServer.close((err) => {
-            if (err) {
-                reject(err);
-                return;
-            }
+  return new Promise((resolve, reject) => {
+    httpServer.close((err) => {
+      if (err) {
+        reject(err);
+        return;
+      }
 
-            resolve();
-        });
+      resolve();
     });
+  });
 }
 
 module.exports.close = close;
