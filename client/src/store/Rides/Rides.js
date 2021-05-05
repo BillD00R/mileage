@@ -7,6 +7,7 @@ class Rides {
   }
 
   setList(value) {
+    console.log(`setting rides to ${value}`);
     this._list = value;
   }
 
