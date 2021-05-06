@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from "react";
-import Rides from "../store/Rides";
+import ridesStore from "../store/ridesStore";
 
 const context = createContext(null);
 
@@ -8,7 +8,7 @@ const useMainContext = () => {
 };
 
 const MainContext = (props) => {
-  return <context.Provider value={{ rides: Rides }}>{props.children}</context.Provider>;
+  return <context.Provider value={{ rides: ridesStore }}>{props.children}</context.Provider>;
 };
 
 export { MainContext, useMainContext };

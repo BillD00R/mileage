@@ -1,7 +1,7 @@
-import $API from "./index";
+import $API from "../api/index";
 
 const fetchRides = async () => {
-  const data = await $API.get("/rides");
+  const { data } = await $API.get("/rides");
   return data;
 };
 const createRide = async (newRide) => {
@@ -13,8 +13,8 @@ const updateRide = async (id, updatedRide) => {
   return data;
 };
 const deleteRide = async (id) => {
-  const { data } = await $API.delete(`/rides/${id}`);
-  return data;
+  await $API.delete(`/rides/${id}`);
+  return id;
 };
 
 export { fetchRides, createRide, updateRide, deleteRide };

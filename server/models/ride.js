@@ -5,16 +5,8 @@ const rideSchema = Schema({
   owner: String,
   description: String,
   mileage: String,
-  consumption: Number,
+  consumption: String,
   selectedFile: String,
-  likes: {
-    type: [String],
-    default: [],
-  },
-  createdAt: {
-    type: Date,
-    default: new Date(),
-  },
 });
 
 const ride = model("ride", rideSchema);

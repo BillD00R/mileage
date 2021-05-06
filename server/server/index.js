@@ -37,8 +37,8 @@ function initialize() {
     const app = express();
     httpServer = http.createServer(app);
     app.use(cors());
-    app.use(express.urlencoded({ extended: true }));
-    app.use(express.json());
+    app.use(express.urlencoded({ limit: "30mb", extended: true }));
+    app.use(express.json({ limit: "30mb", extended: true }));
 
     app.use("/api", router);
 

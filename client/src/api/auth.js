@@ -1,4 +1,20 @@
-import { API } from "./index";
+import $host from "./index";
 
-export const signIn = (formData) => API.post("/user/signin", formData);
-export const signUp = (formData) => API.post("/user/signup", formData);
+const handleResult = async (route, userData, history) => {
+  const answer = await $host.post(route, userData);
+  if (answer.status === 200) {
+    localStorage.setItem("profile", JSON.stringify({ ...answer?.data }));
+    history.push("/");
+    return answer?.data;
+  } else {
+    throw new Error(answer);
+  }
+};
+
+export const signUp = async (userData, history) => {
+  handleResult("signIn", userData, history);
+};
+
+export const signIn = async (userData, history) => {
+  handleResult("signIn", userData, history);
+};

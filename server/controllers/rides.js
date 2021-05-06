@@ -9,8 +9,6 @@ const getRides = async (req, res) => {
   try {
     const rides = await model.find();
 
-    // console.log(postMessages);
-
     res.status(200).json(rides);
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -22,7 +20,7 @@ const createRide = async (req, res) => {
 
   const ride = req.body;
 
-  const newRide = new model({ ...ride, owner: req.userId, createdAt: new Date().toISOString() });
+  const newRide = new model({ ...ride, owner: req.userId });
 
   try {
     await newRide.save();

@@ -6,7 +6,6 @@ import { observer } from "mobx-react-lite";
 import Ride from "./Ride/Ride";
 import makeStyles from "./styles";
 
-import { fetchRides } from "../../api/Rides";
 import { useMainContext } from "../../context";
 
 const Rides = observer(() => {
@@ -14,22 +13,12 @@ const Rides = observer(() => {
 
   const { rides } = useMainContext();
 
-  useEffect(async () => {
-    const { data } = await fetchRides();
-
-    rides.setList(data);
-
-    console.table(data);
-  }, []);
-
-  console.log("refreshing rides...");
-
   return !rides.list.length ? (
     <CircularProgress />
   ) : (
     <Grid className={classes.mainContainer} container alignItems="stretch" spacing={3}>
       {rides.list.map((ride) => (
-        <Grid key={ride.id} item xs={12} sm={6}>
+        <Grid key={ride._id} item xs={12} sm={6}>
           <Ride ride={ride} />
         </Grid>
       ))}
