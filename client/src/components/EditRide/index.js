@@ -3,12 +3,13 @@ import React, { useEffect, useState } from "react";
 import FileBase from "react-file-base64";
 import { observer } from "mobx-react-lite";
 import useStyles from "./styles";
-import { createRide, updateRide } from "../../api/Rides.js";
+import { createRide, updateRide, deleteRide } from "../../api/Rides.js";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 import { useMainContext } from "../../context";
 import { useHistory } from "react-router";
 
-const Form = observer(() => {
+const EditRide = observer(() => {
   const initialRideData = { name: "", description: "", mileage: "", selectedFile: "" };
   const [rideData, setRideData] = useState(initialRideData);
   const classes = useStyles();
@@ -18,11 +19,12 @@ const Form = observer(() => {
 
   const { rides } = useMainContext();
 
+  const ride = rides.current;
+
   useEffect(() => {
-    if (rides.current) setRideData(rides.current);
+    if (rides.current) setRideData(ride);
     console.log(rideData);
-    console.log(rides.current);
-  }, [rideData, rides.current]);
+  }, [ride]);
 
   const clear = () => {
     setRideData(initialRideData);
@@ -31,7 +33,7 @@ const Form = observer(() => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (rides.current._id !== 0) {
+    if (rides.current?._id) {
       updateRide(rides.current?._id, { ...rideData }, rides)
         .then((updatedRide) => {
           rides.list.map((ride) => (ride._id === updatedRide._id ? ride : updatedRide));
@@ -68,7 +70,7 @@ const Form = observer(() => {
       <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
         <Typography variant="h6">{rides.current?._id ? "Editing" : "Creating"} a Ride</Typography>
 
-        <TextField name="name" variant="outlined" label="Ride Name" fullWidth value={rideData.title} onChange={(e) => setRideData({ ...rideData, name: e.target.value })} />
+        <TextField name="name" variant="outlined" label="Ride Name" fullWidth value={rideData.name} onChange={(e) => setRideData({ ...rideData, name: e.target.value })} />
 
         <TextField
           name="description"
@@ -96,9 +98,26 @@ const Form = observer(() => {
         <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>
           Clear
         </Button>
+        {rides.current && (
+          <Button
+            size="small"
+            color="secondary"
+            onClick={() =>
+              deleteRide(ride._id)
+                .then((answer) => {
+                  rides.setList(rides.list.filter((ride) => ride._id !== answer));
+                })
+                .catch((e) => {
+                  console.log(e);
+                })
+            }
+          >
+            delete
+          </Button>
+        )}
       </form>
     </Paper>
   );
 });
 
-export default Form;
+export default EditRide;

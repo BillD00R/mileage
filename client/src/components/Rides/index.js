@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
-import { Grid, CircularProgress } from "@material-ui/core";
+import { Grid, CircularProgress, Button } from "@material-ui/core";
 import { observer } from "mobx-react-lite";
+import { Link } from "react-router-dom";
 
 // import rides from "../../store/Rides";
-import Ride from "./Ride/Ride";
+import Ride from "./Ride";
 import makeStyles from "./styles";
 
 import { useMainContext } from "../../context";
@@ -13,7 +14,9 @@ const Rides = observer(() => {
 
   const { rides } = useMainContext();
 
-  return !rides.list.length ? (
+  const user = JSON.parse(localStorage.getItem("profile"));
+
+  return rides.updating ? (
     <CircularProgress />
   ) : (
     <Grid className={classes.mainContainer} container alignItems="stretch" spacing={3}>
@@ -22,6 +25,11 @@ const Rides = observer(() => {
           <Ride ride={ride} />
         </Grid>
       ))}
+      {user && (
+        <Button component={Link} to="/edit" variant="contained" color="primary">
+          Add Ride
+        </Button>
+      )}
     </Grid>
   );
 });

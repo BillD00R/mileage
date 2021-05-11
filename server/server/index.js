@@ -50,7 +50,7 @@ function initialize() {
       // eslint-disable-next-line no-undef
       .connect(process.env.CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
       .then(listen())
-      .catch((error) => console.log(error.messaGE));
+      .catch((error) => console.log(error.message));
   });
 }
 

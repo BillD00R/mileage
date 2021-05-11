@@ -4,8 +4,8 @@ const rideSchema = Schema({
   name: String,
   owner: String,
   description: String,
-  mileage: String,
-  consumption: String,
+  mileage: Number,
+  consumption: Number,
   selectedFile: String,
 });
 

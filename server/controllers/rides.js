@@ -7,6 +7,11 @@ const name = model.collection.collectionName;
 
 const getRides = async (req, res) => {
   try {
+    if (req.userId) {
+      const rides = await model.find({ owner: req.userId });
+      return res.status(200).json(rides);
+    }
+
     const rides = await model.find();
 
     res.status(200).json(rides);
@@ -58,7 +63,7 @@ const deleteRide = async (req, res) => {
 };
 
 const fillRoute = (route) => {
-  route.get(`/${name}`, getRides);
+  route.get(`/${name}`, auth, getRides);
   route.post(`/${name}`, auth, createRide);
   route.patch(`/${name}/:id`, auth, updateRide);
   route.delete(`/${name}/:id`, auth, deleteRide);

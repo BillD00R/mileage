@@ -4,7 +4,7 @@ import { Link, useHistory, useLocation } from "react-router-dom";
 import decode from "jwt-decode";
 import { observer } from "mobx-react-lite";
 
-import memories from "../../images/memories.png";
+import petrol from "../../images/petrol.png";
 import useStyles from "./styles";
 
 const Navbar = observer(() => {
@@ -16,8 +16,8 @@ const Navbar = observer(() => {
 
   const logout = () => {
     localStorage.clear();
-    history.push("/");
     setUser(null);
+    history.push("/auth");
   };
 
   useEffect(() => {
@@ -36,9 +36,9 @@ const Navbar = observer(() => {
     <AppBar className={classes.appBar} position="static" color="inherit">
       <div className={classes.brandContainer}>
         <Typography component={Link} to="/" className={classes.heading} variant="h2" align="center">
-          Memories
+          Fuel and stuff
         </Typography>
-        <img className={classes.image} src={memories} alt="icon" height="60" />
+        <img className={classes.image} src={petrol} alt="icon" height="60" />
       </div>
       <Toolbar className={classes.toolbar}>
         {user ? (
