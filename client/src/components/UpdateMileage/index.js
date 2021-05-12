@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import useStyles from "./styles";
 import { updateRide } from "../../api/Rides.js";
-import NumberFormat from "react-number-format";
 
 import { useMainContext } from "../../context";
 import { useHistory } from "react-router";
@@ -11,7 +10,6 @@ import { useHistory } from "react-router";
 const UpdateMileage = observer(() => {
   const classes = useStyles();
   const history = useHistory();
-  // const ride = useSelector((state) => (currentId ? state.rides.find((p) => p._id === currentId) : null));
 
   const { rides } = useMainContext();
 
@@ -42,40 +40,24 @@ const UpdateMileage = observer(() => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (rides.current?._id) {
-      // if (isTrip) {
-      //   const totalMileage = ;
-      //   console.log(`${rideData.initialMileage} + ${rideData.trip} = ${totalMileage}`);
-      //   setRideData({ ...rideData, mileage: totalMileage });
-      // }
-
       if (isRefill && Number(rideData.trip) > 0) {
         console.log(true);
         rideData.consumption = (Number(rideData.lastRefill) / Number(rideData.trip)) * 100;
-        // console.log(totalConsumption);
-        // setRideData({ ...rideData, consumption: totalConsumption });
       }
       console.log(`initial mileage: ${rideData.initialMileage}`);
       console.log(`trip: ${rideData.trip}`);
       console.log(`total mileage: ${rideData.mileage}`);
       console.log(`last refill: ${rideData.lastRefill}`);
       console.log(`consumption: ${rideData.consumption}`);
-      // updateRide(rides.current?._id, { ...rideData }, rides)
-      //   .then((updatedRide) => {
-      //     rides.list.map((ride) => (ride._id === updatedRide._id ? ride : updatedRide));
-      //     history.push("/");
-      //   })
-      //   .catch((e) => {
-      //     console.log(e);
-      //   });
+      updateRide(rides.current?._id, { ...rideData }, rides)
+        .then((updatedRide) => {
+          rides.list.map((ride) => (ride._id === updatedRide._id ? ride : updatedRide));
+          history.push("/");
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     }
-    // clear();
-  };
-
-  const toggleTrip = () => {
-    setIsTrip((prev) => !prev);
-  };
-  const toggleRefill = () => {
-    setIsRefill((prev) => !prev);
   };
 
   const setMileage = (value) => {
@@ -94,9 +76,9 @@ const UpdateMileage = observer(() => {
         <Typography variant="h6">Updating Mileage Data</Typography>
         <Typography variant="h6">{rideData.name}</Typography>
 
-        <FormControlLabel control={<Switch checked={isTrip} onChange={toggleTrip} />} label="Trip" />
+        <FormControlLabel control={<Switch checked={isTrip} onChange={setIsTrip((prev) => !prev)} />} label="Trip" />
 
-        <NumberFormat
+        <TextField
           name="mileage"
           variant="outlined"
           type="number"
@@ -106,7 +88,7 @@ const UpdateMileage = observer(() => {
           onChange={(e) => setMileage(e.target.value)}
         />
 
-        <FormControlLabel control={<Switch checked={isRefill} onChange={toggleRefill} />} label="Fuel amount" />
+        <FormControlLabel control={<Switch checked={isRefill} onChange={setIsRefill((prev) => !prev)} />} label="Fuel amount" />
         <TextField
           name="consumption"
           variant="outlined"
