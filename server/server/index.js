@@ -7,13 +7,7 @@ const http = require("http");
 const router = require("../routes/index");
 const webServerConfig = require("./config");
 
-const app = express();
 dotenv.config();
-
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(cors());
-app.use("/api", router);
 
 let httpServer;
 

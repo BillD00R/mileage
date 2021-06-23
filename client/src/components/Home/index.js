@@ -38,9 +38,6 @@ const Home = observer(() => {
             <Grid item xs={12}>
               <Rides />
             </Grid>
-            {/* <Grid item xs={12} sm={4}>
-            <Form />
-          </Grid> */}
           </Grid>
         </Container>
       </Grow>

@@ -14,7 +14,7 @@ const UpdateMileage = observer(() => {
   const { rides } = useMainContext();
 
   const ride = rides.current;
-  const [rideData, setRideData] = useState(null);
+  const [rideData, setRideData] = useState({ ...ride, trip: "", lastRefill: "", initialMileage: ride?.mileage });
   const [isTrip, setIsTrip] = React.useState(false);
   const [isRefill, setIsRefill] = React.useState(true);
 

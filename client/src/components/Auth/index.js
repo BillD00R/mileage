@@ -3,9 +3,9 @@ import { useHistory } from "react-router-dom";
 import { Avatar, Paper, Grid, Typography, Container, Button } from "@material-ui/core";
 import { GoogleLogin } from "react-google-login";
 
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import { LockOutlined as LockOutlinedIcon } from "@material-ui/icons";
 import useStyles from "./styles";
-import Input from "./Input.js";
+import Input from "./input";
 import Icon from "./icon";
 import { signUp, signIn } from "../../api/auth";
 
@@ -77,7 +77,15 @@ const Auth = () => {
         <form className={classes.form} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             {Name}
-            <Input name="email" label="Email Address" handleChange={handleChange} type="email" />
+            <Input
+              name="email"
+              label="Email Address"
+              handleChange={(e) => {
+                setEmail(e.target.value);
+              }}
+              type="email"
+              value={email}
+            />
             <Input name="password" label="Password" handleChange={handleChange} type={showPassword ? "text" : "password"} handleShowPassword={handleShowPassword} />
             {repeatPassword}
           </Grid>

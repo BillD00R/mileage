@@ -21,12 +21,13 @@ const Navbar = observer(() => {
   };
 
   useEffect(() => {
-    const token = user?.token;
+    if (!user || !user.token) {
+      return;
+    }
+    const decodedToken = decode(user.token);
 
-    if (token) {
-      const decodedToken = decode(token);
-
-      if (decodedToken.exp * 1000 < new Date().getTime()) logout();
+    if (decodedToken.exp * 1000 < new Date().getTime()) {
+      logout();
     }
 
     setUser(JSON.parse(localStorage.getItem("profile")));

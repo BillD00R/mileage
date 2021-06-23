@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const models = require("../models/");
-const auth = require("../middleware/");
+const { auth } = require("../middleware/");
 
 const model = models.rides;
 const name = model.collection.collectionName;
@@ -14,9 +14,9 @@ const getRides = async (req, res) => {
 
     const rides = await model.find();
 
-    res.status(200).json(rides);
+    return res.status(200).json(rides);
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    return res.status(404).json({ message: error.message });
   }
 };
 
@@ -30,9 +30,9 @@ const createRide = async (req, res) => {
   try {
     await newRide.save();
 
-    res.status(201).json(newRide);
+    return res.status(201).json(newRide);
   } catch (error) {
-    res.status(409).json({ message: error.message });
+    return res.status(409).json({ message: error.message });
   }
 };
 
@@ -47,7 +47,7 @@ const updateRide = async (req, res) => {
 
   const updatedRide = await model.findByIdAndUpdate(_id, { ...ride, _id }, { new: true });
 
-  res.json(updatedRide);
+  return res.json(updatedRide);
 };
 
 const deleteRide = async (req, res) => {

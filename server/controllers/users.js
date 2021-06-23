@@ -1,10 +1,14 @@
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 
 const models = require("../models/");
+const { JWTSign } = require("../middleware/");
 
 const model = models.users;
 const name = model.collection.collectionName;
+
+function SenderError(res) {
+  return res.status(404).json({ message: `${name}'s doesn't exist.` });
+}
 
 const signIn = async (req, res) => {
   const { email, password } = req.body;
@@ -12,13 +16,13 @@ const signIn = async (req, res) => {
   try {
     const existingUser = await model.findOne({ email });
 
-    if (!existingUser) return res.status(404).json({ message: "User doesn't exist." });
+    if (!existingUser) return SenderError(res);
 
     const isPasswordCorrect = await bcrypt.compare(password, existingUser.password);
 
     if (!isPasswordCorrect) return res.status(400).json({ message: "Invalid credentials" });
 
-    const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, "test", { expiresIn: "1h" });
+    const token = JWTSign({ email: existingUser.email, id: existingUser._id });
 
     res.status(200).json({ result: existingUser, token });
   } catch (error) {
@@ -40,7 +44,7 @@ const signUp = async (req, res) => {
 
     const result = await model.create({ email, password: passwordHash, name: `${firstName} ${lastName}` });
 
-    const token = jwt.sign({ email: result.email, id: result._id }, "test", { expiresIn: "1h" });
+    const token = JWTSign({ email: result.email, id: result._id });
 
     res.status(201).json({ result, token });
   } catch (error) {
